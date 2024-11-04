@@ -1,0 +1,15 @@
+<%- include('../../partials/header.ejs')%>
+<section id="lesson_details">
+  <h1>Lesson: <%= lesson.title %></h1>
+
+  <h2>Topics</h2>
+  <ul>
+    <% lesson.topics.forEach(topic => { %>
+      <li><a href="/topics/<%= topic._id %>"><%= topic.title %></a></li>
+    <% }) %>
+  </ul>
+
+  <a href="/topics/create?lessonId=<%= lesson._id %>">Add Topic</a>
+
+  <a href="/modules/<%= lesson.moduleId %>">Back to Module</a>
+</section>

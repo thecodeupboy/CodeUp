@@ -1,0 +1,31 @@
+<%- include('../../partials/header.ejs')%>
+<section id="userDetails">
+<h2>Account Settings</h2>
+<form id="registrationForm" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="contact">Contact Number:</label>
+    <input type="tel" id="contact" name="contact" required>
+
+    <label for="profession">Profession:</label>
+    <select id="profession" name="profession" required>
+        <option value="">Select your profession</option>
+        <option value="Student">Student</option>
+        <option value="Employee">Employee</option>
+    </select>
+
+    <label for="organization">Organization:</label>
+    <input type="text" id="organization" name="organization" required>
+
+    <label for="job_title">Job Title:</label>
+    <input type="text" id="job_title" name="job_title">
+
+    <button type="submit">Update</button>
+    <p><%=mess%></p>
+</form>
+
+</section>

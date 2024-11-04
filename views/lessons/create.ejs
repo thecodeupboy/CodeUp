@@ -1,0 +1,24 @@
+<%- include('../../partials/header.ejs')%>
+<section id="create_lesson">
+    <h1>Create New Lesson</h1>
+
+    <form action="/lessons/create" method="POST">
+        <!-- Hidden field to pass the moduleId -->
+        <input type="hidden" name="moduleId" value="<%= moduleId %>">
+
+        <!-- Lesson Title Field -->
+        <label for="title">Lesson Title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+
+        <!-- Lesson Content Field -->
+        <label for="content">Content:</label>
+        <textarea id="content" name="content"></textarea>
+        <br>
+
+        <button type="submit">Create Lesson</button>
+    </form>
+
+    <!-- Link back to the module view -->
+    <p><a href="/modules/<%= moduleId %>">Back to Module</a></p>
+  </section>

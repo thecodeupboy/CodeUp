@@ -1,0 +1,27 @@
+<%- include('../../partials/header.ejs')%>
+   <section>
+        <div class="course-container">
+            <h1><%= course.title %></h1>
+            <div class="modules">
+                <% course.modules.forEach(module => { %>
+                    <div class="module">
+                        <h3 ><%= module.title %></h3>
+                        <ul>
+                            <% module.lessons.forEach(lesson => { %>
+                                <li >
+                                    <strong><%= lesson.title %></strong>
+                                    <ul>
+                                        <% lesson.topics.forEach(topic => { %>
+                                            <li >
+                                                <strong><%= topic.title %></strong>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>

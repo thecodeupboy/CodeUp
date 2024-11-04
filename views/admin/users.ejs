@@ -1,0 +1,44 @@
+<%- include('../../partials/header.ejs')%>
+<section id="users" >
+    <h2>User Management</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Profession</th>
+                <th>Organization</th>
+                <th>Job Title</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach((user) => { %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.contact %></td>
+                    <td><%= user.profession %></td>
+                    <td><%= user.organization %></td>
+                    <td><%= user.job_title %></td>
+                    <td>
+                        <a href="updateUserStatus/<%= user.id %>" class="status-link 
+                            <%= user.status === 'active' ? 'active' : 'suspended' %>">
+                            <%= user.status %>
+                        </a>
+                    </td>
+                    <td><% user.roles.forEach(role => { %>
+                        <span class="role <%= role %>"><%= role %></span>
+                    <% }) %></td>
+                    <td>
+                        <a href="updateUserInfo/<%= user.id %>" class="btn btn-update">Edit</a>
+                        <a href="/admin/deleteUser/<%= user.id %>" class="btn btn-delete">Delete</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</section>

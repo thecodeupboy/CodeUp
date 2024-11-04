@@ -1,0 +1,19 @@
+<%- include('../../partials/header.ejs')%>
+<section id="course_details">
+  <h1><%= course.title %></h1>
+  <p><%= course.description %></p>
+
+  <h2>Modules</h2>
+  <ul>
+    <% course.modules.forEach(module => { %>
+      <li><a href="/modules/<%= module._id %>"><%= module.title %></a></li>
+    <% }) %>
+  </ul>
+  <a href="/modules/create?courseId=<%= course._id %>">Add Module</a>
+
+  <a href="/courses/">Back to Courses</a>
+</section>
+
+
+
+

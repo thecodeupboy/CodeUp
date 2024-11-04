@@ -1,0 +1,24 @@
+{
+  "name": "coffee_cafe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "serverRun": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.6.3",
+    "nodemailer": "^6.9.15",
+    "nodemon": "^3.1.7",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "description": ""
+}
