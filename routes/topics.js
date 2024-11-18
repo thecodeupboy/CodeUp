@@ -4,7 +4,7 @@ const Lesson = require('../models/lesson');
 const Topic = require('../models/topic');
 
 // Show form to create a new topic
-router.post('/create', (req, res) => {
+router.get('/create', (req, res) => {
   res.render('topics/create', { lessonId: req.query.lessonId });
 });
 

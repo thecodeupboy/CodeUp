@@ -2,12 +2,19 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
 require('./dbconnections/dbconnection');
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/users');
 const authRouter = require('./routes/auth'); // Import the new auth routes
+
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from React app
+}));
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
@@ -36,8 +43,11 @@ app.use('/topics', require('./routes/topics'));
 app.use(userRouter);
 app.use('/admin', adminRouter);
 app.use(express.static('public'));
+app.use('/thumbnails', express.static('public/thumbnails'));
 app.set('view engine', 'ejs');
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
+
+

@@ -13,7 +13,7 @@
                                     <ul>
                                         <% lesson.topics.forEach(topic => { %>
                                             <li >
-                                                <strong><%= topic.title %></strong>
+                                                <a href="/topics/<%= topic.id %>"><%= topic.title %></a>
                                             </li>
                                         <% }) %>
                                     </ul>
