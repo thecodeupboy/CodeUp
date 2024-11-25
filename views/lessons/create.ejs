@@ -3,8 +3,8 @@
     <h1>Create New Lesson</h1>
 
     <form action="/lessons/create" method="POST">
-        <!-- Hidden field to pass the moduleId -->
-        <input type="hidden" name="moduleId" value="<%= moduleId %>">
+        <!-- Hidden field to pass the courseId -->
+        <input type="hidden" name="courseId" value="<%= courseId %>">
 
         <!-- Lesson Title Field -->
         <label for="title">Lesson Title:</label>
@@ -19,6 +19,6 @@
         <button type="submit">Create Lesson</button>
     </form>
 
-    <!-- Link back to the module view -->
-    <p><a href="/modules/<%= moduleId %>">Back to Module</a></p>
+    <!-- Link back to the course view -->
+    <p><a href="/courses/<%= courseId %>">Back to Course</a></p>
   </section>

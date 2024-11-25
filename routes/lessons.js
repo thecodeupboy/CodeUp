@@ -1,40 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const Lesson = require('../models/lesson');
-const Module = require('../models/module');
+const Course = require('../models/course');
 
 // Route to render the "Create Lesson" form
 router.get('/create', (req, res) => {
-  const moduleId = req.query.moduleId; // Get moduleId from query parameters
-  if (!moduleId) {
-    return res.status(400).send("Module ID is required to create a lesson.");
+  const courseId = req.query.courseId; // Get moduleId from query parameters
+  if (!courseId) {
+    return res.status(400).send("Course ID is required to create a lesson.");
   }
-  res.render('lessons/create', { moduleId });
+  // res.render('lessons/create', { courseId });
+  res.send(courseId)
 });
 
 // Route to handle form submission and create a new lesson
 router.post('/create', async (req, res) => {
   try {
-    const { title, content, moduleId } = req.body;
+    const { title, content, courseId } = req.body;
 
-    if (!moduleId) {
-      return res.status(400).send("Module ID is required to create a lesson.");
+    if (!courseId) {
+      return res.status(400).send("Course ID is required to create a lesson.");
     }
 
     // Create a new Lesson document
     const lesson = new Lesson({
       title,
       content,
-      moduleId
+      courseId
     });
     await lesson.save();
 
     // Add the created lesson's ID to the corresponding module's lessons array
-    await Module.findByIdAndUpdate(moduleId, {
+    await Course.findByIdAndUpdate(courseId, {
       $push: { lessons: lesson._id }
     });
 
-    res.redirect(`/modules/${moduleId}`); // Redirect to the module view page
+    res.redirect(`/courses/${courseId}`); // Redirect to the module view page
   } catch (error) {
     console.error(error);
     res.status(500).send("Failed to create lesson. Please try again.");

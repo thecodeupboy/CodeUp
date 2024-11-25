@@ -15,19 +15,10 @@ const upload = multer({ storage });
 
 // Show all courses
 router.get('/', async (req, res) => {
-  const courses = await Course.find().populate('modules');
+  const courses = await Course.find();
   // res.render('courses/allCourses', { courses });
-  // console.log(courses[0]._id);
-  
   res.send(courses);  
 
-});
-
-// Show a specific course
-router.get('/:id', async (req, res) => {
-  const course = await Course.findById(req.params.id).populate('modules');
-  // res.render('courses/show', { course });
-  res.send(course)
 });
 
 // Show form to create a new course
@@ -35,29 +26,52 @@ router.get('/create', (req, res) => {
   res.render('courses/create');
 });
 
-
 // Handle course creation
 router.post('/create', upload.single('thumbnail'), async (req, res) => {
-  console.log(req.file, "hi")
   const course = new Course({
     title: req.body.title,
     description: req.body.description,
-    thumbnail: "D:/CodeUp/public/thumbnails/" + req.file.filename
+    thumbnail: "thumbnails/" + req.file.filename,
+    about: req.body.about
   });
   await course.save();
   res.redirect('/courses');
 });
 
 
-router.get('/index/:id', async (req, res) => {
+// Show a specific course
+router.get('/:id', async (req, res) => {
   const course = await Course.findById(req.params.id).populate({
-    path: 'modules',
+    path: 'lessons',
+    select: 'title _id', // Select only the title and _id for lessons
     populate: {
-      path: 'lessons',
-      populate: { path: 'topics' }
-    }
+      path: 'topics',
+      select: 'title _id', // Select only the title and _id for topics
+    },
   });
-  res.render('courses/index', { course });
+  res.send(course)
 });
+
+router.get('/index/:id', async (req, res) => {
+  const contentTable = await Course.findById(req.params.id).populate({
+    path: 'lessons',
+    select: 'title _id', // Select only the title and _id for lessons
+    populate: {
+      path: 'topics',
+      select: 'title _id', // Select only the title and _id for topics
+    },
+  });
+  // res.render('courses/index', { course });
+  res.send(contentTable)
+});
+
+router.get('/delete/:id', async (req, res, next) => {
+  const course = await Course.findByIdAndDelete(req.params.id);
+  course.save()
+  res.redirect('/courses')
+});
+
+
+
 
 module.exports = router;

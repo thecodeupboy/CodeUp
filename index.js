@@ -37,7 +37,6 @@ app.get('/', (req, res) => {
 
 // Other Routes
 app.use('/courses', require('./routes/courses'));
-app.use('/modules', require('./routes/modules'));
 app.use('/lessons', require('./routes/lessons'));
 app.use('/topics', require('./routes/topics'));
 app.use(userRouter);

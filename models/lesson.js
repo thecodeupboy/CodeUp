@@ -6,9 +6,9 @@ const LessonSchema = new mongoose.Schema({
     required: true,
   },
   topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
-  moduleId: {
+  courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Module',
+    ref: 'Course',
     required: true,
   },
 });
