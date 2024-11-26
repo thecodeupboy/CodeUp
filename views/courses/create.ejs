@@ -1,23 +1,21 @@
 <%- include('../../partials/header.ejs')%>
 <section id="create_new_course">
-  <h1>Create a New Course</h1>
-  <form action="/courses/create" method="POST" enctype="multipart/form-data">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required><br>
-    
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" required></textarea><br>
+    <h1>Create a New Course</h1>
+    <form action="/courses/create" method="POST" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required /><br />
 
-    <label for="about">About:</label>
-    <textarea id="about" name="about" required></textarea><br>
+        <label for="sDescription">Short Description:</label>
+        <textarea id="sDescription" name="sDescription" required></textarea><br />
 
-    <label for="thumbnail">Thumbnail Image:</label>
-    <input type="file" name="thumbnail" accept="image/*" required><br>
-    
-    <button type="submit">Create Course</button>
-  </form>
+        <label for="lDescription">Long Description:</label>
+        <textarea id="lDescription" name="lDescription" required></textarea><br />
 
-  <p><a href="/courses">Back to Courses</a></p>
-  
+        <label for="thumbnail">Thumbnail Image:</label>
+        <input type="file" name="thumbnail" accept="image/*" required /><br />
 
+        <button type="submit">Create Course</button>
+    </form>
+
+    <p><a href="/courses">Back to Courses</a></p>
 </section>

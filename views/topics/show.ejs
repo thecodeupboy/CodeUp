@@ -1,8 +1,8 @@
 <%- include('../../partials/header.ejs')%>
 <section id="topic_details">
-  <h1>Topic: <%= topic.title %></h1>
-  <p><%= topic.content %></p>
+    <h1>Topic: <%= topic.title %></h1>
+    <p><%= topic.content %></p>
+    <p><%= topic.videoUrl %></p>
 
-  <a href="/lessons/<%= topic.lessonId %>">Back to Lesson</a>
-
+    <a href="/lessons/<%= topic.lessonId %>">Back to Lesson</a>
 </section>
