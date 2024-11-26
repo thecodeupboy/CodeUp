@@ -61,8 +61,8 @@ router.get('/index/:id', async (req, res) => {
       select: 'title _id', // Select only the title and _id for topics
     },
   });
-  // res.render('courses/index', { course });
-  res.send(contentTable)
+  res.render('courses/index', { course });
+  // res.send(contentTable)
 });
 
 router.get('/delete/:id', async (req, res, next) => {
