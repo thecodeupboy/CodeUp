@@ -9,17 +9,17 @@
         <input type="email" id="email" name="email" value="<%= data.email %>" required>
     
         <label for="contact">Contact Number:</label>
-        <input type="tel" id="contact" name="contact" value="<%= data.contact %>" required>
+        <input type="tel" id="contact" name="contact" value="<%= data.contact %>" >
     
         <label for="profession">Profession:</label>
-        <select id="profession" name="profession" required>
+        <select id="profession" name="profession" >
             <option value="">Select your profession</option>
             <option value="Student" <%= data.profession === 'Student' ? 'selected' : '' %>>Student</option>
             <option value="Employee" <%= data.profession === 'Employee' ? 'selected' : '' %>>Employee</option>
         </select>
     
         <label for="organization">Organization:</label>
-        <input type="text" id="organization" name="organization" value="<%= data.organization %>" required>
+        <input type="text" id="organization" name="organization" value="<%= data.organization %>" >
     
         <label for="job_title">Job Title:</label>
         <input type="text" id="job_title" name="job_title" value="<%= data.job_title %>">
@@ -32,8 +32,8 @@
             <input type="checkbox" id="mentor" name="roles" value="mentor" <%= data.roles.includes('mentor') ? 'checked' : '' %>>
             <label for="mentor">Mentor</label>
 
-            <input type="checkbox" id="ambassador" name="roles" value="ambassador" <%= data.roles.includes('ambassador') ? 'checked' : '' %>>
-            <label for="ambassador">Ambassador</label>
+            <input type="checkbox" id="ambassador" name="roles" value="creater" <%= data.roles.includes('creater') ? 'checked' : '' %>>
+            <label for="ambassador">Creater</label>
         </div>
         <button type="submit" class="btn-update">Update</button>
     </form>

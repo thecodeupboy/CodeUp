@@ -13,19 +13,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Show all courses
+
 router.get("/", async (req, res) => {
     const courses = await Course.find();
-    res.render("courses/allCourses", { courses });
-    // res.send(courses);
+    // res.render("courses/allCourses", { courses });
+    res.send(courses);
 });
 
-// Show form to create a new course
+
 router.get("/create", (req, res) => {
     res.render("courses/create");
 });
 
-// Handle course creation
+
 router.post("/create", upload.single("thumbnail"), async (req, res) => {
     const course = new Course({
         title: req.body.title,
@@ -37,14 +37,14 @@ router.post("/create", upload.single("thumbnail"), async (req, res) => {
     res.redirect("/courses");
 });
 
-// Show a specific course
+
 router.get("/:id", async (req, res) => {
     const course = await Course.findById(req.params.id).populate({
         path: "lessons",
-        select: "title _id", // Select only the title and _id for lessons
+        select: "title _id", 
         populate: {
             path: "topics",
-            select: "title _id", // Select only the title and _id for topics
+            select: "title _id", 
         },
     });
     // res.render("courses/show.ejs", { course });
@@ -54,10 +54,10 @@ router.get("/:id", async (req, res) => {
 router.get("/index/:id", async (req, res) => {
     const contentTable = await Course.findById(req.params.id).populate({
         path: "lessons",
-        select: "title _id", // Select only the title and _id for lessons
+        select: "title _id", 
         populate: {
             path: "topics",
-            select: "title _id", // Select only the title and _id for topics
+            select: "title _id", 
         },
     });
     // res.render('courses/index', { course });
