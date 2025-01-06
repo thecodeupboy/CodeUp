@@ -51,7 +51,8 @@ app.use('/auth', authRouter); // Use the auth routes under the /auth path
 
 app.get('/', (req, res) => {
     res.send(`<h1>Hello, ${req.user ? req.user.displayName : 'Guest'}</h1>
-              <a href="/auth/google">Login with Google</a>`);
+              <a href="/auth/google">Login with Google</a>
+              <a href="/admin/users">Login with Google</a>`);
 });
 
 // Protect routes based on user role
