@@ -113,6 +113,7 @@ exports.archiveUser = async (req, res) => {
     }
 
     const archivedUser = new ArchivedUser({
+      id: user._id,
       googleId: user.googleId,
       name: user.name,
       email: user.email,

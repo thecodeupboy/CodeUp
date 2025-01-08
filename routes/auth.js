@@ -59,16 +59,16 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        if(req.user.status === 'suspended') {
-            return res.send('user suspended');
-        }else{
+        // if(req.user.status === 'suspended') {
+        //     return res.send('user suspended');
+        // }else{
          if (req.user.roles.includes('creater')) {
             res.send('creater dashboard');
         } else {
             res.send('home page'); 
         }
     }
-    }
+    // }
 );
 
 
