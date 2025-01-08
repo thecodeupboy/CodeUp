@@ -160,7 +160,7 @@ exports.restoreUserFromArchive = async (req, res) => {
     }
 
     const restoredUser = new userTable({
-      _id: archivedUser._id,
+      _id: req.params.id,
       googleId: archivedUser.googleId,
       name: archivedUser.name,
       email: archivedUser.email,
