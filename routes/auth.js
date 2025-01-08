@@ -59,12 +59,15 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        // After successful login, check the user's role and redirect accordingly
+        if(req.user.status === 'suspended') {
+            return res.send('user suspended');
+        }else{
          if (req.user.roles.includes('creater')) {
-            res.redirect('/createrDashboard');
+            res.send('creater dashboard');
         } else {
-            res.redirect('/home');  // fallback if no roles matched
+            res.send('home page'); 
         }
+    }
     }
 );
 

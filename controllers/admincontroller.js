@@ -63,8 +63,7 @@ exports.updateUser = async (req, res) => {
         testCreated: testCreated,
         coursesEnrolled: coursesEnrolled,
         createdDate: createdDate
-      }, 
-      { new: true } 
+      } 
     );
 
     updatedUser.save();
