@@ -1,14 +1,25 @@
-const router=require('express').Router() 
-const adminc =require('../controllers/admincontroller')
+const router = require('express').Router();
+const adminc = require('../controllers/admincontroller');
 
-router.get('/users',adminc.getUsers);
+// Show all active users
+router.get('/users', adminc.getUsers);
 
-router.get('/updateUserInfo/:id',adminc.updateUserForm)
+// Update user information
+router.post('/updateUserInfo/:id', adminc.updateUser);
 
-router.post('/updateUserInfo/:id',adminc.updateUser)
+// Update user status (suspended/active)
+router.post('/updateUserStatus/:id', adminc.updateStatus);
 
-router.get('/updateUserStatus/:id', adminc.updateStatus)
+// Archive a user
+router.post('/archiveUser/:id', adminc.archiveUser);
 
-router.get('/deleteUser/:id',adminc.deleteUser)
+// Show all archived users
+router.get('/archivedUsers', adminc.getArchivedUsers);
 
-module.exports=router
+// Restore user from archive to active
+router.post('/restoreUser/:id', adminc.restoreUserFromArchive);
+
+// Permanently delete an archived user
+router.post('/deleteArchivedUser/:id', adminc.deleteArchivedUser);
+
+module.exports = router;

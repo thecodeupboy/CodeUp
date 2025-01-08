@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../models/auth');
+const User = require('../models/user');
 
 // Passport Google Authentication
 passport.use(new GoogleStrategy({

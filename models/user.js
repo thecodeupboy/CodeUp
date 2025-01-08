@@ -13,4 +13,4 @@ const Authschema = mongoose.Schema({
     createdDate: { type: Date, required: true, default: () => new Date() },
 });
 
-module.exports = mongoose.model('auth', Authschema);
+module.exports = mongoose.model('user', Authschema);
