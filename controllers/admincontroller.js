@@ -15,24 +15,49 @@ exports.getUsers = async (req, res) => {
 // Update user information
 exports.updateUser = async (req, res) => {
   const id = req.params.id;
-  const { name, email, contact, profession, organization, job_title, roles } = req.body;
+  const {
+    googleId,  // optional: only if you're updating googleId
+    name, 
+    email, 
+    profilePicture,
+    status,
+    roles,
+    coursesCreated,
+    testCreated,
+    coursesEnrolled,
+    createdDate
+  } = req.body;
 
   try {
-    await userTable.findByIdAndUpdate(id, {
-      name: name,
-      email: email,
-      contact: contact,
-      profession: profession,
-      organization: organization,
-      job_title: job_title,
-      roles: roles,
-    });
-    res.json({ message: 'User updated successfully' });
+    // Using `findByIdAndUpdate` to update all fields dynamically.
+    const updatedUser = await userTable.findByIdAndUpdate(
+      id, 
+      {
+        googleId: googleId,  // You can skip this if googleId is not updated
+        name: name,
+        email: email,
+        profilePicture: profilePicture,
+        status: status,
+        roles: roles,
+        coursesCreated: coursesCreated,
+        testCreated: testCreated,
+        coursesEnrolled: coursesEnrolled,
+        createdDate: createdDate
+      }, 
+      { new: true } // Return the updated user object
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User updated successfully', user: updatedUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating user', error });
   }
 };
+
 
 // Update user status (suspended/active)
 exports.updateStatus = async (req, res) => {
