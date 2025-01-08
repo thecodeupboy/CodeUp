@@ -53,7 +53,7 @@ exports.updateUser = async (req, res) => {
     const updatedUser = await userTable.findByIdAndUpdate(
       id, 
       {
-        googleId: googleId,  // You can skip this if googleId is not updated
+        googleId: googleId,
         name: name,
         email: email,
         profilePicture: profilePicture,
@@ -64,9 +64,10 @@ exports.updateUser = async (req, res) => {
         coursesEnrolled: coursesEnrolled,
         createdDate: createdDate
       }, 
-      { new: true } // Return the updated user object
+      { new: true } 
     );
 
+    updatedUser.save();
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
