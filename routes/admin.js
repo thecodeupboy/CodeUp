@@ -4,6 +4,8 @@ const adminc = require('../controllers/admincontroller');
 // Show all active users
 router.get('/users', adminc.getUsers);
 
+router.get('/userInfo/:id', adminc.getUserInfo);
+
 // Update user information
 router.post('/updateUserInfo/:id', adminc.updateUser);
 
