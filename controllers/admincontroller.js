@@ -1,6 +1,26 @@
 const userTable = require('../models/user');
 const ArchivedUser = require('../models/user_archive');  
 
+// Get User Info
+exports.getUserInfo = async (req, res) => {
+  const id = req.params.id; // Get user ID from request parameters
+
+  try {
+    // Find the user by ID
+    const user = await userTable.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user details
+    res.json({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving user information', error });
+  }
+};
+ 
 // Show all active users
 exports.getUsers = async (req, res) => {
   try {
@@ -12,11 +32,11 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// Update user information
+// Update User Info
 exports.updateUser = async (req, res) => {
   const id = req.params.id;
   const {
-    googleId,  // optional: only if you're updating googleId
+    googleId,
     name, 
     email, 
     profilePicture,
