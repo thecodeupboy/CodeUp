@@ -1,72 +1,43 @@
-const userTable = require('../models/user');
-const ArchivedUser = require('../models/user_archive');  
+const User = require('../models/user');
+const ArchivedUser = require('../models/user_archive');
 
-// Get User Info
-exports.getUserInfo = async (req, res) => {
-  const id = req.params.id; // Get user ID from request parameters
-
-  try {
-    // Find the user by ID
-    const user = await userTable.findById(id);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Return the user details
-    res.json({ user });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error retrieving user information', error });
-  }
-};
- 
-// Show all active users
+// Get all users (active users)
 exports.getUsers = async (req, res) => {
   try {
-    const data = await userTable.find();
-    res.json({ users: data });
+    const users = await User.find();
+    res.json({ users });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error fetching users', error });
   }
 };
 
-// Update User Info
-exports.updateUser = async (req, res) => {
+// Get user information by ID
+exports.getUserInfo = async (req, res) => {
   const id = req.params.id;
-  const {
-    googleId,
-    name, 
-    email, 
-    profilePicture,
-    status,
-    roles,
-    coursesCreated,
-    testCreated,
-    coursesEnrolled,
-    createdDate
-  } = req.body;
 
   try {
-    // Using `findByIdAndUpdate` to update all fields dynamically.
-    const updatedUser = await userTable.findByIdAndUpdate(
-      id, 
-      {
-        googleId: googleId,
-        name: name,
-        email: email,
-        profilePicture: profilePicture,
-        status: status,
-        roles: roles,
-        coursesCreated: coursesCreated,
-        testCreated: testCreated,
-        coursesEnrolled: coursesEnrolled,
-        createdDate: createdDate
-      } 
-    );
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving user information', error });
+  }
+};
 
-    updatedUser.save();
+// Update user information
+exports.updateUser = async (req, res) => {
+  const id = req.params.id;
+  const { googleId, name, email, profilePicture, status, roles, coursesCreated, testCreated, coursesEnrolled, createdDate } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      googleId, name, email, profilePicture, status, roles, coursesCreated, testCreated, coursesEnrolled, createdDate
+    }, { new: true });
+
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -78,36 +49,31 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-
-// Update user status (suspended/active)
+// Update user status (active/suspended)
 exports.updateStatus = async (req, res) => {
   const id = req.params.id;
-  
-  try {
-    const data = await userTable.findById(id);
-    let userStatus = data.status;
 
-    if (userStatus === 'suspended') {
-      userStatus = 'active';
-    } else {
-      userStatus = 'suspended';
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    await userTable.findByIdAndUpdate(id, { status: userStatus });
-    res.json({ message: 'User status updated successfully', status: userStatus });
+    user.status = user.status === 'suspended' ? 'active' : 'suspended';
+    await user.save();
+    res.json({ message: `User status updated to ${user.status}`, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating status', error });
   }
 };
 
-// Archive a user (move to archived_users table)
+// Archive a user
 exports.archiveUser = async (req, res) => {
   const userId = req.params.id;
 
   try {
-    const user = await userTable.findById(userId);
-
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -128,7 +94,7 @@ exports.archiveUser = async (req, res) => {
     });
 
     await archivedUser.save();
-    await userTable.findByIdAndDelete(userId);
+    await User.findByIdAndDelete(userId);
 
     res.json({ message: 'User archived successfully', archivedUser });
   } catch (error) {
@@ -148,52 +114,40 @@ exports.getArchivedUsers = async (req, res) => {
   }
 };
 
-// Restore an archived user to normal (active users table)
+// Restore user from archive
 exports.restoreUserFromArchive = async (req, res) => {
   const archivedUserId = req.params.id;
 
   try {
     const archivedUser = await ArchivedUser.findById(archivedUserId);
-
     if (!archivedUser) {
       return res.status(404).json({ message: 'Archived user not found' });
     }
 
-    const restoredUser = new userTable({
-      _id: archivedUser._id,
-      googleId: archivedUser.googleId,
-      name: archivedUser.name,
-      email: archivedUser.email,
-      profilePicture: archivedUser.profilePicture,
-      status: archivedUser.status,
-      roles: archivedUser.roles,
-      coursesCreated: archivedUser.coursesCreated,
-      testCreated: archivedUser.testCreated,
-      coursesEnrolled: archivedUser.coursesEnrolled,
-      createdDate: archivedUser.createdDate,
+    const restoredUser = new User({
+      ...archivedUser.toObject(),
+      archived_at: undefined,
     });
 
     await restoredUser.save();
     await ArchivedUser.findByIdAndDelete(archivedUserId);
 
-    res.json({ message: 'User restored successfully', restoredUser });
+    res.json({ message: 'User restored from archive', restoredUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error restoring user from archive', error });
   }
 };
 
-// Permanently delete an archived user
+// Delete an archived user permanently
 exports.deleteArchivedUser = async (req, res) => {
   const archivedUserId = req.params.id;
 
   try {
-    const archivedUser = await ArchivedUser.findByIdAndDelete(archivedUserId);
-
-    if (!archivedUser) {
+    const deletedUser = await ArchivedUser.findByIdAndDelete(archivedUserId);
+    if (!deletedUser) {
       return res.status(404).json({ message: 'Archived user not found' });
     }
-
     res.json({ message: 'Archived user deleted permanently' });
   } catch (error) {
     console.error(error);
