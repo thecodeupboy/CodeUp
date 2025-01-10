@@ -1,5 +1,5 @@
 const { configDotenv } = require('dotenv');
-const authTable = require('../models/auth')
+const authTable = require('../models/user')
 
 exports.userProfileForm = (req, res) => {
     let mess = ''

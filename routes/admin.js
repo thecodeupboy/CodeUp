@@ -1,14 +1,29 @@
-const router=require('express').Router() 
-const adminc =require('../controllers/admincontroller')
+const router = require('express').Router();
+const adminController = require('../controllers/admincontroller');
+const { verifyToken, checkRole } = require('../middleware/verifyUser');  // Import JWT middleware
 
-router.get('/users',adminc.getUsers);
+// Show all active users
+router.get('/users', verifyToken, adminController.getUsers);
 
-router.get('/updateUserInfo/:id',adminc.updateUserForm)
+// Get info of a specific user by ID (Accessible by admin and user itself)
+router.get('/userInfo/:id', verifyToken, checkRole(['admin', 'user']), adminController.getUserInfo);
 
-router.post('/updateUserInfo/:id',adminc.updateUser)
+// Update user information
+router.post('/updateUserInfo/:id', verifyToken, checkRole(['admin']), adminController.updateUser);
 
-router.get('/updateUserStatus/:id', adminc.updateStatus)
+// Update user status (active/suspended)
+router.post('/updateUserStatus/:id', verifyToken, checkRole(['admin']), adminController.updateStatus);
 
-router.get('/deleteUser/:id',adminc.deleteUser)
+// Archive a user
+router.post('/archiveUser/:id', verifyToken, checkRole(['admin']), adminController.archiveUser);
 
-module.exports=router
+// Get all archived users
+router.get('/archivedUsers', verifyToken, checkRole(['admin']), adminController.getArchivedUsers);
+
+// Restore user from archive
+router.post('/restoreUser/:id', verifyToken, checkRole(['admin']), adminController.restoreUserFromArchive);
+
+// Permanently delete an archived user
+router.post('/deleteArchivedUser/:id', verifyToken, checkRole(['admin']), adminController.deleteArchivedUser);
+
+module.exports = router;
