@@ -16,8 +16,8 @@ const upload = multer({ storage });
 // Show all courses
 router.get("/", async (req, res) => {
     const courses = await Course.find();
-    res.render("courses/allCourses", { courses });
-    // res.send(courses);
+    // res.render("courses/allCourses", { courses });
+    res.send(courses);
 });
 
 // Show form to create a new course
