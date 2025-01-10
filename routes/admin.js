@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const adminController = require('../controllers/admincontroller');
-const { verifyToken, checkRole } = require('../middleware/verifyToken');  // Import JWT middleware
+const { verifyToken, checkRole } = require('../middleware/verifyUser');  // Import JWT middleware
 
 // Show all active users
 router.get('/users', verifyToken, adminController.getUsers);
