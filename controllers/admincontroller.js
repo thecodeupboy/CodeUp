@@ -67,7 +67,7 @@ exports.updateStatus = async (req, res) => {
     res.status(500).json({ message: 'Error updating status', error });
   }
 };
-
+ 
 // Archive a user
 exports.archiveUser = async (req, res) => {
   const userId = req.params.id;

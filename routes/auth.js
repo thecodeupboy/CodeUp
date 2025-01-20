@@ -77,7 +77,7 @@ router.get('/google',
 
 // Google callback route
 router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/' }),
+    passport.authenticate('google', { failureRedirect: '/auth' }),
     (req, res) => {
         if (req.user.status === 'suspended') {
             return res.status(403).send('User is suspended.');
@@ -88,7 +88,7 @@ router.get('/google/callback',
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',  // Ensure it's only sent over HTTPS in production
             sameSite: 'Lax', // Helps prevent CSRF attacks
-            maxAge: 60 * 60 * 1000  // Token expires in 1 hour
+            maxAge: 60 * 60 * 1000
         });
 
         // Send user info
@@ -102,7 +102,14 @@ router.get('/google/callback',
 // Logout route
 router.get('/logout', (req, res, next) => {
     res.clearCookie('authToken');  // Clear the auth token from cookies
-    res.redirect('/');
+    res.redirect('/auth');
 });
+
+router.get('/', (req, res) => {
+  res.send(`<h1>Hello, ${req.user ? req.user.displayName : 'Guest'}</h1>
+            <a href="/auth/google">Login with Google</a>`);
+});
+
+
 
 module.exports = router;
