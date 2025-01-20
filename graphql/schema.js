@@ -4,7 +4,7 @@ const userTypeDefs = require("./types/userType");
 const examTypeDefs = require("./types/examType"); 
 const courseResolvers = require("./resolvers/courseResolver");
 const userResolvers = require("./resolvers/userResolver");
-const examResolvers = require("./resolvers/examResolvers");  // Import examResolvers
+const examResolvers = require("./resolvers/examResolvers");  
 
 const typeDefs = gql`
   ${courseTypeDefs}

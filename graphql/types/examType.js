@@ -1,6 +1,7 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+  # Remove Enum for question type (objective or subjective)
   type Exam {
     _id: ID!
     tests: [Test]
@@ -26,6 +27,7 @@ const typeDefs = gql`
     options: [String]  # Only for objective questions
     answer: String  # Correct answer for objective questions
     duration: Int!  # Duration to answer the question in seconds
+    test: Test  # Link to the associated test
   }
 
   type Query {
@@ -39,7 +41,7 @@ const typeDefs = gql`
 
   type Mutation {
     createExam(
-      tests: [ID]!
+      tests: [ID]
       duration: Int!
       category: String!
       description: String!
@@ -56,8 +58,8 @@ const typeDefs = gql`
     deleteExam(_id: ID!): Exam
 
     createTest(
-      examId: ID!
-      questions: [ID]!
+      examId: ID
+      questions: [ID]
       duration: Int!
       type: String!
       category: String!
@@ -77,22 +79,22 @@ const typeDefs = gql`
     deleteTest(_id: ID!): Test
 
     createQuestion(
-      testId: ID!
+      testId: ID
       text: String!
       type: String!
       category: String!
-      options: [String]
-      answer: String
+      options: [String]  # Only for objective questions
+      answer: String  # Only for objective questions
       duration: Int!
     ): Question
 
     updateQuestion(
-      _id: ID!
+      _id: ID
       text: String
       type: String
       category: String
-      options: [String]
-      answer: String
+      options: [String]  # Only for objective questions
+      answer: String  # Only for objective questions
       duration: Int
     ): Question
 

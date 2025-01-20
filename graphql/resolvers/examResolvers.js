@@ -2,21 +2,12 @@ const Exam = require("../../models/exam");
 const Test = require("../../models/test");
 const Question = require("../../models/question");
 
-const examResolvers = {
+const resolvers = {
   Query: {
-    exams: async () => await Exam.find(),
-    exam: async (_, { id }) => await Exam.findById(id).populate({
-      path: "tests",
-      select: "title _id",
-      populate: {
-        path: "questions",
-        select: "text _id",
-      },
-    }),
-
-    tests: async () => await Test.find(),
-    test: async (_, { id }) => await Test.findById(id).populate("questions"),
-
+    exams: async () => await Exam.find().populate('tests'),
+    exam: async (_, { id }) => await Exam.findById(id).populate('tests'),
+    tests: async () => await Test.find().populate('questions'),
+    test: async (_, { id }) => await Test.findById(id).populate('questions'),
     questions: async () => await Question.find(),
     question: async (_, { id }) => await Question.findById(id),
   },
@@ -29,7 +20,11 @@ const examResolvers = {
     },
 
     updateExam: async (_, { _id, tests, duration, category, description }) => {
-      const updatedExam = await Exam.findByIdAndUpdate(_id, { tests, duration, category, description }, { new: true });
+      const updatedExam = await Exam.findByIdAndUpdate(
+        _id,
+        { tests, duration, category, description },
+        { new: true }
+      );
       if (!updatedExam) throw new Error("Exam not found");
       return updatedExam;
     },
@@ -40,14 +35,18 @@ const examResolvers = {
       return deletedExam;
     },
 
-    createTest: async (_, { examId, questions, duration, type, category, description }) => {
-      const test = new Test({ examId, questions, duration, type, category, description });
+    createTest: async (_, { questions, duration, category, description, type }) => {
+      const test = new Test({ questions, duration, category, description, type });
       await test.save();
       return test;
     },
 
-    updateTest: async (_, { _id, examId, questions, duration, type, category, description }) => {
-      const updatedTest = await Test.findByIdAndUpdate(_id, { examId, questions, duration, type, category, description }, { new: true });
+    updateTest: async (_, { _id, questions, duration, category, description, type }) => {
+      const updatedTest = await Test.findByIdAndUpdate(
+        _id,
+        { questions, duration, category, description, type },
+        { new: true }
+      );
       if (!updatedTest) throw new Error("Test not found");
       return updatedTest;
     },
@@ -58,14 +57,18 @@ const examResolvers = {
       return deletedTest;
     },
 
-    createQuestion: async (_, { testId, text, type, category, options, answer, duration }) => {
-      const question = new Question({ testId, text, type, category, options, answer, duration });
+    createQuestion: async (_, { text, type, category, options, answer, duration, testId }) => {
+      const question = new Question({ text, type, category, options, answer, duration, testId });
       await question.save();
       return question;
     },
 
     updateQuestion: async (_, { _id, text, type, category, options, answer, duration }) => {
-      const updatedQuestion = await Question.findByIdAndUpdate(_id, { text, type, category, options, answer, duration }, { new: true });
+      const updatedQuestion = await Question.findByIdAndUpdate(
+        _id,
+        { text, type, category, options, answer, duration },
+        { new: true }
+      );
       if (!updatedQuestion) throw new Error("Question not found");
       return updatedQuestion;
     },
@@ -77,12 +80,13 @@ const examResolvers = {
     },
   },
 
+  // Resolvers for the relationships
   Exam: {
-    tests: async (exam) => await Test.find({ examId: exam._id }),
+    tests: async (exam) => await Test.find({ _id: { $in: exam.tests } }),
   },
 
   Test: {
-    questions: async (test) => await Question.find({ testId: test._id }),
+    questions: async (test) => await Question.find({ _id: { $in: test.questions } }),
   },
 
   Question: {
@@ -90,4 +94,4 @@ const examResolvers = {
   },
 };
 
-module.exports = examResolvers;
+module.exports = resolvers;
